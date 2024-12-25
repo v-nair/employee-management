@@ -1,0 +1,21 @@
+# Use the latest official Node.js image as a base
+FROM node:latest
+
+# Expose the development port for Vite (or Webpack)
+EXPOSE 3000
+
+# Set working directory
+WORKDIR /var/www/html
+
+# Install dependencies
+COPY package.json ./
+COPY package-lock.json ./
+
+# semicolen also instead of && but ; means does not depend on the previous command to run wheras && depends on successfully running of the previous command
+RUN npm install && npm cache clean
+
+# Copy the rest of the application code
+COPY . .
+
+# Default command to run when the container starts
+CMD ["sh", "-c", "npm run dev -- --host 0.0.0.0"]
